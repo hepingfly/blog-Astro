@@ -1,0 +1,26 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Card from "@components/Card.astro";
+import { SITE } from "@config";
+import { getCollection } from "astro:content";
+import getSortedPosts from "@utils/getSortedPosts";
+
+const posts = await getCollection("blog");
+const sortedPosts = getSortedPosts(posts);
+---
+
+<Layout title={`文章 | ${SITE.title}`} description="浏览所有博客文章">
+  <Header />
+  <main id="main-content">
+    <section class="mx-auto max-w-3xl px-4 pb-12 pt-16">
+      <h1 class="mb-2 text-3xl font-bold">所有文章</h1>
+      <p class="mb-8 opacity-80">共 {sortedPosts.length} 篇文章</p>
+      <div class="grid gap-6">
+        {sortedPosts.map(post => <Card post={post} />)}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,46 @@
+---
+import { slugify } from "@utils/slugify";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDatetime, tags, readingTime } = post.data;
+const slug = slugify(post.data);
+---
+
+<article
+  class="group rounded-lg border border-skin-line bg-skin-card p-6 transition-all hover:scale-[1.02] hover:shadow-lg"
+>
+  <a href={`/posts/${slug}`} class="block">
+    <h3 class="mb-2 text-xl font-bold group-hover:text-skin-accent">
+      {title}
+    </h3>
+    <p class="mb-4 text-sm opacity-80">{description}</p>
+    <div class="flex flex-wrap items-center gap-4 text-xs opacity-70">
+      <time datetime={pubDatetime.toISOString()}>
+        {
+          pubDatetime.toLocaleDateString("zh-CN", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        }
+      </time>
+      {readingTime && <span>{readingTime}</span>}
+    </div>
+    {
+      tags && tags.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {tags.slice(0, 3).map(tag => (
+            <span class="rounded-full bg-skin-fill px-2 py-1 text-xs">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
+  </a>
+</article>

@@ -1,0 +1,104 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import SchemaOrg from "@components/SchemaOrg.astro";
+import { SITE } from "@config";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  pubDatetime,
+  modDatetime,
+  author,
+  tags,
+  readingTime,
+} = post.data;
+
+const { Content } = await post.render();
+
+const ogImageUrl =
+  ogImage || SITE.ogImage || "og-default.jpg";
+const canonicalUrl =
+  canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<Layout
+  title={title}
+  description={description}
+  ogImage={ogImageUrl}
+  canonicalURL={canonicalUrl}
+  scrollSmooth={true}
+>
+  <SchemaOrg
+    type="BlogPosting"
+    title={title}
+    description={description}
+    canonicalURL={canonicalUrl}
+    pubDatetime={pubDatetime}
+    modDatetime={modDatetime}
+    ogImage={ogImageUrl}
+    author={author}
+    slot="head"
+  />
+  <Header />
+  <main id="main-content">
+    <article class="prose mx-auto mt-8 max-w-3xl px-4">
+      <!-- 文章头部 -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold sm:text-4xl">{title}</h1>
+        <div class="mt-4 flex flex-wrap gap-4 text-sm opacity-80">
+          <time datetime={pubDatetime.toISOString()}>
+            发布于 {
+              pubDatetime.toLocaleDateString("zh-CN", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
+          </time>
+          {
+            modDatetime && (
+              <time datetime={modDatetime.toISOString()}>
+                更新于{" "}
+                {modDatetime.toLocaleDateString("zh-CN", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            )
+          }
+          {readingTime && <span>{readingTime}</span>}
+        </div>
+        {
+          tags && tags.length > 0 && (
+            <div class="mt-4 flex flex-wrap gap-2">
+              {tags.map(tag => (
+                <a
+                  href={`/tags/${tag}`}
+                  class="rounded-full bg-skin-card px-3 py-1 text-sm hover:bg-skin-card-muted"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      <!-- 文章内容 -->
+      <Content />
+    </article>
+  </main>
+  <Footer />
+</Layout>

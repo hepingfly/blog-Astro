@@ -1,0 +1,122 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { SITE } from "@config";
+---
+
+<Layout
+  title={`搜索 | ${SITE.title}`}
+  description="搜索博客文章"
+>
+  <Header />
+  <main id="main-content">
+    <section class="mx-auto max-w-3xl px-4 pb-12 pt-16">
+      <h1 class="mb-8 text-3xl font-bold">搜索文章</h1>
+
+      <div class="mb-8">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="输入关键词搜索..."
+          class="w-full rounded-lg border border-skin-line bg-skin-fill px-4 py-3 focus:border-skin-accent focus:outline-none"
+          autocomplete="off"
+        />
+      </div>
+
+      <div id="searchResults"></div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  import Fuse, { type FuseResult } from "fuse.js";
+
+  interface SearchItem {
+    title: string;
+    description: string;
+    data: {
+      title: string;
+      description: string;
+      tags: string[];
+    };
+    slug: string;
+  }
+
+  let fuse: Fuse<SearchItem>;
+
+  // 获取所有文章数据
+  const posts = await fetch("/search.json").then(res => res.json());
+
+  // 配置 Fuse.js
+  const options = {
+    keys: ["data.title", "data.description", "data.tags"],
+    includeScore: true,
+    threshold: 0.4,
+    minMatchCharLength: 2,
+  };
+
+  fuse = new Fuse(posts, options);
+
+  const searchInput = document.getElementById(
+    "searchInput"
+  ) as HTMLInputElement;
+  const searchResults = document.getElementById("searchResults");
+
+  function displayResults(results: FuseResult<SearchItem>[]) {
+    if (!searchResults) return;
+
+    if (results.length === 0) {
+      searchResults.innerHTML = `
+        <p class="text-center opacity-70">未找到相关文章</p>
+      `;
+      return;
+    }
+
+    searchResults.innerHTML = results
+      .map(
+        ({ item }) => `
+        <article class="mb-6 rounded-lg border border-skin-line bg-skin-card p-6 transition-all hover:scale-[1.02]">
+          <a href="/posts/${item.slug}" class="block">
+            <h3 class="mb-2 text-xl font-bold hover:text-skin-accent">
+              ${item.data.title}
+            </h3>
+            <p class="mb-4 text-sm opacity-80">${item.data.description}</p>
+            ${
+              item.data.tags && item.data.tags.length > 0
+                ? `
+              <div class="flex flex-wrap gap-2">
+                ${item.data.tags
+                  .slice(0, 3)
+                  .map(
+                    tag => `
+                  <span class="rounded-full bg-skin-fill px-2 py-1 text-xs">
+                    #${tag}
+                  </span>
+                `
+                  )
+                  .join("")}
+              </div>
+            `
+                : ""
+            }
+          </a>
+        </article>
+      `
+      )
+      .join("");
+  }
+
+  searchInput?.addEventListener("input", e => {
+    const query = (e.target as HTMLInputElement).value;
+
+    if (query.length < 2) {
+      if (searchResults) searchResults.innerHTML = "";
+      return;
+    }
+
+    const results = fuse.search(query);
+    displayResults(results);
+  });
+</script>
