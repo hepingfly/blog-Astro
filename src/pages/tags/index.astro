@@ -1,0 +1,48 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { SITE } from "@config";
+import { getCollection } from "astro:content";
+import getUniqueTags from "@utils/getUniqueTags";
+
+const posts = await getCollection("blog");
+const tags = getUniqueTags(posts);
+
+// 统计每个标签的文章数量
+const tagCounts = tags.map(({ tag, tagName }) => ({
+  tag,
+  tagName,
+  count: posts.filter(post =>
+    post.data.tags.map(t => t.toLowerCase()).includes(tagName.toLowerCase())
+  ).length,
+}));
+---
+
+<Layout title={`标签 | ${SITE.title}`} description="浏览所有文章标签">
+  <Header />
+  <main id="main-content">
+    <section class="mx-auto max-w-3xl px-4 pb-12 pt-16">
+      <h1 class="mb-2 text-3xl font-bold">所有标签</h1>
+      <p class="mb-8 opacity-80">共 {tags.length} 个标签</p>
+      <div class="flex flex-wrap gap-4">
+        {
+          tagCounts.map(({ tag, tagName, count }) => (
+            <a
+              href={`/tags/${tag}`}
+              class="group flex items-center gap-2 rounded-lg border border-skin-line bg-skin-card px-4 py-3 transition-all hover:scale-105 hover:bg-skin-card-muted"
+            >
+              <span class="text-lg group-hover:text-skin-accent">
+                #{tagName}
+              </span>
+              <span class="rounded-full bg-skin-fill px-2 py-1 text-xs">
+                {count}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

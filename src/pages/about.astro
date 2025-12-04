@@ -1,0 +1,61 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { SITE } from "@config";
+---
+
+<Layout title={`关于 | ${SITE.title}`} description="关于本站和作者的信息">
+  <Header />
+  <main id="main-content">
+    <article class="prose mx-auto max-w-3xl px-4 pb-12 pt-16">
+      <h1>关于本站</h1>
+      <p>
+        这是一个使用 Astro
+        构建的高质量个人技术博客，专注于分享编程技术、开发经验和生活感悟。
+      </p>
+
+      <h2>技术栈</h2>
+      <ul>
+        <li><strong>框架:</strong> Astro</li>
+        <li><strong>样式:</strong> Tailwind CSS</li>
+        <li><strong>部署:</strong> GitHub Pages / Vercel</li>
+        <li><strong>SEO:</strong> 完整的 meta 标签、OG、Twitter Card、JSON-LD</li>
+      </ul>
+
+      <h2>特性</h2>
+      <ul>
+        <li>🚀 极致的性能优化</li>
+        <li>🎨 简洁优雅的设计</li>
+        <li>🌓 支持深色模式</li>
+        <li>📱 完全响应式设计</li>
+        <li>🔍 完整的 SEO 优化</li>
+        <li>📊 自动生成 sitemap 和 RSS</li>
+        <li>🏷️ 标签和分类系统</li>
+        <li>⚡ 代码高亮</li>
+        <li>📖 阅读时长估算</li>
+      </ul>
+
+      <h2>关于作者</h2>
+      <p>
+        一名热爱编程和技术分享的开发者。欢迎通过以下方式联系我：
+      </p>
+      <ul>
+        <li>GitHub: <a href={SITE.profile} target="_blank">{SITE.profile}</a></li>
+        <li>Email: yourmail@example.com</li>
+      </ul>
+
+      <h2>版权说明</h2>
+      <p>
+        本站所有原创文章采用 <a
+          href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          CC BY-NC-SA 4.0
+        </a> 协议进行许可。
+      </p>
+    </article>
+  </main>
+  <Footer />
+</Layout>

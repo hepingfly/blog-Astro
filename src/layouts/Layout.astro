@@ -1,0 +1,54 @@
+---
+import Seo from "@components/Seo.astro";
+import SchemaOrg from "@components/SchemaOrg.astro";
+import "@styles/base.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  scrollSmooth?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  scrollSmooth = false,
+} = Astro.props;
+---
+
+<Seo
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  canonicalURL={canonicalURL}
+  scrollSmooth={scrollSmooth}
+>
+  <SchemaOrg type="WebSite" slot="head" />
+  <slot name="head" />
+</Seo>
+
+<slot />
+
+<script is:inline>
+  // 主题切换脚本
+  const theme = (() => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  })();
+
+  if (theme === "light") {
+    document.documentElement.setAttribute("data-theme", "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+  window.localStorage.setItem("theme", theme);
+</script>
