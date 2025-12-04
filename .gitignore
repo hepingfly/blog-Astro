@@ -25,7 +25,7 @@ pnpm-debug.log*
 # vscode setting folders
 .vscode/
 
-# lock files
-package-lock.json
+# lock files (保留 package-lock.json 用于 GitHub Actions)
+# package-lock.json  # 不要忽略，npm ci 需要它
 yarn.lock
 pnpm-lock.yaml
