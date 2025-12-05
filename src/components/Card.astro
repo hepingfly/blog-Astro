@@ -9,12 +9,16 @@ export interface Props {
 const { post } = Astro.props;
 const { title, description, pubDatetime, tags, readingTime } = post.data;
 const slug = slugify(post.data);
+
+// 使用 Astro 的 BASE_URL 确保路径正确
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const postUrl = `${baseUrl}posts/${slug}/`;
 ---
 
 <article
   class="group rounded-lg border border-skin-line bg-skin-card p-6 transition-all hover:scale-[1.02] hover:shadow-lg"
 >
-  <a href={`/posts/${slug}`} class="block">
+  <a href={postUrl} class="block">
     <h3 class="mb-2 text-xl font-bold group-hover:text-skin-accent">
       {title}
     </h3>
