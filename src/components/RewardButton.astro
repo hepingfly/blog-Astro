@@ -1,0 +1,205 @@
+---
+/**
+ * 文章打赏组件
+ * 支持微信和支付宝二维码展示
+ */
+---
+
+<div class="reward-section my-12 border-t border-skin-card pt-8">
+  <div class="text-center">
+    <p class="mb-4 text-lg opacity-80">
+      📖 觉得文章有帮助？请作者喝杯咖啡吧 ☕
+    </p>
+    <button
+      id="reward-button"
+      class="reward-btn inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-white font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-105 active:scale-95"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"
+        ></path>
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+          clip-rule="evenodd"></path>
+      </svg>
+      <span>赞赏支持</span>
+    </button>
+  </div>
+</div>
+
+<!-- 模态框 -->
+<div
+  id="reward-modal"
+  class="reward-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm"
+>
+  <div
+    class="reward-modal-content relative mx-4 max-w-lg rounded-2xl bg-skin-fill p-8 shadow-2xl"
+  >
+    <!-- 关闭按钮 -->
+    <button
+      id="close-modal"
+      class="absolute right-4 top-4 rounded-full p-2 hover:bg-skin-card transition-colors"
+      aria-label="关闭"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- 标题 -->
+    <div class="mb-6 text-center">
+      <h3 class="mb-2 text-2xl font-bold">感谢您的支持！</h3>
+      <p class="text-sm opacity-70">您的鼓励是我持续创作的动力</p>
+    </div>
+
+    <!-- 二维码容器 -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <!-- 微信支付 -->
+      <div class="reward-qr-card rounded-xl bg-skin-card p-4 text-center">
+        <div class="mb-3 flex items-center justify-center gap-2">
+          <svg class="h-6 w-6 text-green-500" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.032zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"
+            ></path>
+          </svg>
+          <span class="font-semibold text-green-600 dark:text-green-400">微信支付</span>
+        </div>
+        <div class="mb-2 rounded-lg bg-white p-3">
+          <img
+            src="/reward/wechat-qr.svg"
+            alt="微信支付二维码"
+            class="mx-auto h-40 w-40"
+          />
+        </div>
+        <p class="text-xs opacity-70">打开微信扫一扫</p>
+      </div>
+
+      <!-- 支付宝 -->
+      <div class="reward-qr-card rounded-xl bg-skin-card p-4 text-center">
+        <div class="mb-3 flex items-center justify-center gap-2">
+          <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M18.974 16.513c.9.443 2.047.925 3.495 1.089.03-0.36.047-0.725.047-1.093 0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12c2.97 0 5.691-1.081 7.787-2.869-2.67-.502-5.365-1.344-7.603-2.671-1.832 1.66-3.873 2.425-5.146 2.425-1.127 0-1.832-.589-1.832-1.537 0-2.062 2.611-4.063 6.346-4.063.899 0 1.815.118 2.727.338.738-1.157 1.401-2.44 1.938-3.798h-7.444v-.916h3.81v-1.397h-4.681v-.916h4.681v-1.883c0-.12-.053-.173-.173-.173h-1.38l.251-.933h1.644c.741 0 1.098.342 1.098 1.098v1.891h4.835v.916h-4.835v1.397h3.897c-.542 1.683-1.298 3.278-2.201 4.714 1.623.574 3.412.927 5.146 1.046zm-8.35-2.463c-2.905 0-4.915 1.381-4.915 2.766 0 .398.235.733.695.733.935 0 2.301-.632 4.22-2.499z"
+            ></path>
+          </svg>
+          <span class="font-semibold text-blue-600 dark:text-blue-400">支付宝</span>
+        </div>
+        <div class="mb-2 rounded-lg bg-white p-3">
+          <img
+            src="/reward/alipay-qr.svg"
+            alt="支付宝二维码"
+            class="mx-auto h-40 w-40"
+          />
+        </div>
+        <p class="text-xs opacity-70">打开支付宝扫一扫</p>
+      </div>
+    </div>
+
+    <!-- 底部文字 -->
+    <div class="mt-6 text-center">
+      <p class="text-sm opacity-70">感谢您的慷慨，每一份支持都弥足珍贵！</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .reward-modal {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .reward-modal.hidden {
+    display: none;
+  }
+
+  .reward-modal:not(.hidden) {
+    display: flex;
+  }
+
+  .reward-modal-content {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .reward-qr-card {
+    transition: all 0.3s ease;
+  }
+
+  .reward-qr-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 深色模式优化 */
+  html[data-theme="dark"] .reward-qr-card {
+    background: rgba(255, 255, 255, 0.05);
+  }
+</style>
+
+<script>
+  const rewardButton = document.getElementById("reward-button");
+  const rewardModal = document.getElementById("reward-modal");
+  const closeModal = document.getElementById("close-modal");
+
+  // 打开模态框
+  rewardButton?.addEventListener("click", () => {
+    rewardModal?.classList.remove("hidden");
+    document.body.style.overflow = "hidden"; // 禁止背景滚动
+  });
+
+  // 关闭模态框
+  const closeRewardModal = () => {
+    rewardModal?.classList.add("hidden");
+    document.body.style.overflow = ""; // 恢复滚动
+  };
+
+  closeModal?.addEventListener("click", closeRewardModal);
+
+  // 点击遮罩关闭
+  rewardModal?.addEventListener("click", (e) => {
+    if (e.target === rewardModal) {
+      closeRewardModal();
+    }
+  });
+
+  // ESC 键关闭
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !rewardModal?.classList.contains("hidden")) {
+      closeRewardModal();
+    }
+  });
+</script>
