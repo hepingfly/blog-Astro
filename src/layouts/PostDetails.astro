@@ -3,7 +3,9 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import SchemaOrg from "@components/SchemaOrg.astro";
+import RewardButton from "@components/RewardButton.astro";
 import { SITE } from "@config";
+import { getUrl } from "@utils/getUrl";
 import type { CollectionEntry } from "astro:content";
 
 export interface Props {
@@ -85,7 +87,7 @@ const canonicalUrl =
             <div class="mt-4 flex flex-wrap gap-2">
               {tags.map(tag => (
                 <a
-                  href={`/tags/${tag}`}
+                  href={getUrl(`/tags/${tag}`)}
                   class="rounded-full bg-skin-card px-3 py-1 text-sm hover:bg-skin-card-muted"
                 >
                   #{tag}
@@ -98,6 +100,9 @@ const canonicalUrl =
 
       <!-- 文章内容 -->
       <Content />
+
+      <!-- 打赏按钮 -->
+      <RewardButton />
     </article>
   </main>
   <Footer />
