@@ -6,6 +6,7 @@ import Card from "@components/Card.astro";
 import { SITE } from "@config";
 import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
+import { getUrl } from "@utils/getUrl";
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -26,13 +27,13 @@ const recentPosts = sortedPosts.slice(0, SITE.postPerIndex);
       </div>
       <div class="flex gap-4">
         <a
-          href="/posts"
+          href={getUrl("/posts")}
           class="rounded-lg bg-skin-accent px-6 py-3 text-skin-inverted hover:opacity-90"
         >
           浏览文章
         </a>
         <a
-          href="/tags"
+          href={getUrl("/tags")}
           class="rounded-lg border border-skin-line px-6 py-3 hover:bg-skin-card"
         >
           查看标签
@@ -58,7 +59,7 @@ const recentPosts = sortedPosts.slice(0, SITE.postPerIndex);
     <section class="mx-auto max-w-3xl px-4 pb-12">
       <div class="mb-6 flex items-center justify-between">
         <h2 class="text-2xl font-bold">最新文章</h2>
-        <a href="/posts" class="text-sm hover:text-skin-accent">
+        <a href={getUrl("/posts")} class="text-sm hover:text-skin-accent">
           查看全部 →
         </a>
       </div>
